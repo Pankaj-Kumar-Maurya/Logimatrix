@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Logimatrix.tbladdprofile>
+
+@{
+    ViewBag.Title = "ShowProfile";
+}
+
+<h1>Active Profile</h1>
+
+<table id="tbl1">
+    <tbody id="tblbody">
+
+    </tbody>
+</table>
+
+<h2>ShowProfile</h2>
+
+<p>
+    @Html.ActionLink("Create A New Profile", "AddProfile")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProfileImage)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                <img src="@Url.Content(item.ProfileImage)" height="100" width="100" />
+            </td>
+            <td>
+                <input type="button" value="Active" id="btnactive" onclick="Active('@item.id')" />
+            </td>
+        </tr>
+    }
+</table>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    function Active(id) {
+        $.ajax({
+            url: '/User/ActiveProfile',
+            type: 'post',
+            data: { A: id },
+            success: function (res) {
+                var item = '';
+                $("#tbl1 tbody").append(res.UserName);
+                $("#tbl1 tbody").append("<img  src=" + res.ProfileImage + "/>");
+            },
+            error: function () {
+                alert("active jq error");
+            }
+
+        });
+    }
+</script>
+
